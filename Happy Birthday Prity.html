@@ -1,0 +1,188 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Happy Birthday Prity</title>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;800&family=Playfair+Display:wght@500;700&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#2a1442;--yel:#ffc83d;--yel2:#d99a0b;--pink:#ff6b9d;--cream:#fff3dc;color-scheme:dark;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+*{box-sizing:border-box}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+html,body{height:100%;margin:0}
+body{background:#170b36 linear-gradient(180deg,#170b36 0%,#35185c 62%,#6a2f8a 100%);font-family:"Baloo 2",system-ui,sans-serif;color:#fff;overflow:hidden;user-select:none;-webkit-tap-highlight-color:transparent}
+#app{position:relative;height:100%;max-width:480px;margin:0 auto;display:flex;flex-direction:column}
+#top{display:flex;justify-content:space-between;align-items:center;padding:14px 16px}
+.dots{display:flex;gap:7px}.dot{width:9px;height:9px;border-radius:50%;border:1.5px solid #fff6}
+.dot.on{background:var(--yel);border-color:var(--yel)}.dot.done{background:var(--pink);border-color:var(--pink)}
+#snd{background:none;border:1px solid #fff4;color:#fffc;border-radius:99px;padding:2px 12px;font:600 12px "Baloo 2";cursor:pointer}
+#st{position:relative;flex:1;min-height:0}
+.sc{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .6s}
+.sc.on{opacity:1;pointer-events:auto}
+.sc svg{width:min(84vw,360px);height:auto;overflow:visible}
+#hint{min-height:44px;text-align:center;font-size:13px;color:#fffa;padding:0 30px}
+#go{margin:0 22px 22px;padding:12px;border:0;border-radius:16px;background:var(--yel);color:var(--ink);font:800 20px "Baloo 2";box-shadow:0 5px 0 var(--yel2);cursor:pointer;transition:transform .1s}
+#go:active{transform:translateY(3px);box-shadow:0 2px 0 var(--yel2)}
+#go:disabled{background:#b3804f;box-shadow:0 5px 0 #8a5f36;color:#4b2468;cursor:default}
+#go:focus-visible,#snd:focus-visible{outline:3px solid #fff;outline-offset:3px}
+.cf{position:fixed;width:8px;height:12px;border-radius:2px;z-index:9;pointer-events:none}
+/* scene 1: box + cake */
+#lid{transition:transform .8s cubic-bezier(.5,-.3,.5,1.2),opacity .8s}
+.opened #lid{transform:translate(34px,-170px) rotate(16deg);opacity:0}
+#cake{opacity:0;transform:translateY(70px);transition:opacity .7s .25s,transform .9s .25s cubic-bezier(.2,1.5,.4,1)}
+.opened #cake{opacity:1;transform:none}
+#flame{transform-box:fill-box;transform-origin:50% 100%;animation:fl .18s infinite alternate;transition:opacity .3s}
+#glow{transition:opacity .3s}
+.blown #flame,.blown #glow{opacity:0}
+#smoke{opacity:0}.blown #smoke{animation:sm 1.8s forwards}
+#slice{transition:transform .9s cubic-bezier(.3,1.6,.5,1)}.cut #slice{transform:translate(40px,10px) rotate(7deg)}
+@keyframes fl{to{transform:scale(.92,1.1) rotate(3deg)}}
+@keyframes sm{0%{opacity:.7;transform:translateY(0)}100%{opacity:0;transform:translateY(-40px)}}
+/* scene 2: balloons */
+.bl{position:absolute;left:var(--x);top:var(--y);width:64px;height:78px;border-radius:50% 50% 48% 48%;background:radial-gradient(circle at 32% 28%,#fff9,transparent 36%),var(--c);display:grid;place-items:center;font:800 28px "Baloo 2";color:#fff;cursor:pointer;animation:fb 3s ease-in-out var(--d) infinite alternate}
+.bl::before{content:"";position:absolute;left:50%;top:100%;width:1px;height:70px;background:#fff6}
+.bl::after{content:"";position:absolute;left:calc(50% - 5px);top:calc(100% - 3px);border:5px solid transparent;border-bottom:8px solid var(--c);border-top:0}
+.bl.pop{animation:pp .25s forwards}
+@keyframes fb{to{transform:translateY(-14px) rotate(3deg)}}
+@keyframes pp{to{transform:scale(1.7);opacity:0}}
+#ttl{position:absolute;text-align:center;opacity:0;transition:opacity 1.2s;font-family:"Playfair Display",Georgia,serif;pointer-events:none}
+#ttl span{display:block;font-size:30px}
+#ttl b{display:block;font-size:68px;color:#ffc83d;text-shadow:0 0 22px #ffb21cbb;line-height:1.1}
+.title #ttl{opacity:1}
+/* scene 3: gift + cat */
+#lid2{transition:transform .8s cubic-bezier(.5,-.3,.5,1.2),opacity .8s}
+.gift #lid2{transform:translate(-40px,-160px) rotate(-14deg);opacity:0}
+#cat{transform:translateY(125px);transition:transform .9s .35s cubic-bezier(.2,1.5,.4,1)}
+.gift #cat{transform:none}
+#bub{position:absolute;top:12%;background:var(--cream);color:var(--ink);font-weight:800;font-size:15px;padding:8px 16px;border-radius:14px;text-align:center;max-width:210px;opacity:0;transform:scale(.6);transition:.4s 1.1s}
+#bub::after{content:"";position:absolute;left:calc(50% - 7px);top:100%;border:7px solid transparent;border-top-color:var(--cream);border-bottom:0}
+.gift #bub{opacity:1;transform:none}
+/* scene 4: card */
+#card{position:relative;width:min(80vw,340px);background:var(--cream);color:#3a1d2e;border-radius:16px;padding:22px 22px 18px;font-family:"Playfair Display",Georgia,serif;line-height:1.55;font-size:15.5px;box-shadow:0 14px 40px #0008;transform:rotate(-3deg) scale(.85);transition:transform .8s cubic-bezier(.2,1.4,.4,1)}
+.sc.on #card{transform:none}
+#card h2{margin:0 0 8px;font-size:25px;color:#c4315c}
+#card p{margin:0 0 9px;font-weight:700}
+#card .from{display:block;text-align:right;color:#c4315c;font-weight:700;margin-top:14px}
+#card .mini{position:absolute;right:14px;top:12px;width:44px}
+/* scene 5: sunflower */
+#fh{font:500 24px "Playfair Display",Georgia,serif;color:#ffc83d;text-shadow:0 0 14px #ffb21c88;position:absolute;top:2%}
+#sfw{width:min(70vw,300px);touch-action:pan-y;cursor:grab;transform-style:preserve-3d}
+@media (prefers-reduced-motion:reduce){*{animation-duration:.01s!important;transition-duration:.01s!important}}
+</style>
+</head>
+<body>
+<div id="app">
+ <div id="top"><div class="dots"><i class="dot"></i><i class="dot"></i><i class="dot"></i><i class="dot"></i><i class="dot"></i></div><button id="snd">Sound on</button></div>
+ <div id="st">
+  <!-- 1: box + cake -->
+  <section class="sc" id="s0">
+   <svg viewBox="0 0 300 340" aria-label="Gift box with birthday cake">
+    <defs>
+     <clipPath id="cl"><rect width="200" height="340"/></clipPath>
+     <clipPath id="cr"><rect x="200" width="100" height="340"/></clipPath>
+     <g id="tier"><rect x="70" y="136" width="160" height="56" rx="10" fill="#ff9fc1"/><rect x="70" y="136" width="160" height="12" rx="6" fill="#fff"/>
+      <g fill="#fff"><circle cx="86" cy="150" r="6"/><circle cx="114" cy="152" r="6"/><circle cx="142" cy="150" r="6"/><circle cx="170" cy="152" r="6"/><circle cx="198" cy="150" r="6"/><circle cx="222" cy="148" r="6"/></g>
+      <g><rect x="90" y="166" width="8" height="3" rx="1.5" fill="#5dd9b8"/><rect x="122" y="174" width="8" height="3" rx="1.5" fill="#ffc83d"/><rect x="154" y="166" width="8" height="3" rx="1.5" fill="#a78bfa"/><rect x="186" y="176" width="8" height="3" rx="1.5" fill="#5dd9b8"/><rect x="210" y="166" width="8" height="3" rx="1.5" fill="#ffc83d"/></g></g>
+    </defs>
+    <ellipse cx="150" cy="322" rx="100" ry="9" fill="#0d0520" opacity=".5"/>
+    <rect x="58" y="196" width="184" height="116" rx="6" fill="#ff6b9d"/><rect x="58" y="290" width="184" height="22" rx="6" fill="#e04f84"/><rect x="138" y="196" width="24" height="116" fill="#ffc83d"/>
+    <rect x="106" y="238" width="88" height="28" rx="5" fill="#fff3dc"/><text x="150" y="258" text-anchor="middle" font-family="Playfair Display,Georgia,serif" font-size="17" fill="#2a1442">Prity</text>
+    <g id="cake">
+     <ellipse cx="150" cy="194" rx="110" ry="13" fill="#e6e0ff"/>
+     <use href="#tier" clip-path="url(#cl)"/><use href="#tier" clip-path="url(#cr)" id="slice"/>
+     <rect x="96" y="98" width="108" height="40" rx="9" fill="#ffe49a"/><rect x="96" y="98" width="108" height="10" rx="5" fill="#fff"/>
+     <g fill="#fff"><circle cx="110" cy="110" r="5"/><circle cx="136" cy="111" r="5"/><circle cx="164" cy="111" r="5"/><circle cx="190" cy="110" r="5"/></g>
+     <circle cx="110" cy="92" r="7" fill="#d6203f"/><circle cx="190" cy="92" r="7" fill="#d6203f"/>
+     <rect x="146" y="50" width="8" height="46" rx="2" fill="#5dd9b8"/><g fill="#fff" opacity=".7"><rect x="146" y="58" width="8" height="5"/><rect x="146" y="70" width="8" height="5"/><rect x="146" y="82" width="8" height="5"/></g>
+     <circle id="glow" cx="150" cy="38" r="24" fill="#ffd36b" opacity=".3"/>
+     <path id="flame" d="M150 24c9 9 9 18 0 25-9-7-9-16 0-25z" fill="#ffb21c"/>
+     <path id="smoke" d="M150 40c-6-8 6-14 0-22" stroke="#fff" stroke-width="2" fill="none"/>
+    </g>
+    <g id="lid"><rect x="48" y="170" width="204" height="34" rx="6" fill="#ff7fae"/><rect x="138" y="170" width="24" height="34" fill="#ffc83d"/>
+     <ellipse cx="128" cy="162" rx="20" ry="11" fill="#ffc83d" transform="rotate(-20 128 162)"/><ellipse cx="172" cy="162" rx="20" ry="11" fill="#ffc83d" transform="rotate(20 172 162)"/><circle cx="150" cy="166" r="8" fill="#e8a30c"/></g>
+   </svg>
+  </section>
+  <!-- 2: balloons -->
+  <section class="sc" id="s1"><div id="ttl"><span>Happy Birthday</span><b>Prity</b></div></section>
+  <!-- 3: gift + cat -->
+  <section class="sc" id="s2">
+   <div id="bub">Meow! Happy Birthday Prity!</div>
+   <svg viewBox="0 0 300 340" aria-label="Gift box with a cat">
+    <ellipse cx="150" cy="322" rx="100" ry="9" fill="#0d0520" opacity=".5"/>
+    <g id="cat">
+     <ellipse cx="150" cy="238" rx="40" ry="34" fill="#ffb067"/><ellipse cx="150" cy="244" rx="22" ry="22" fill="#fff3dc"/>
+     <path d="M108 150l6-42 34 26zM192 150l-6-42-34 26z" fill="#ffb067"/><path d="M116 140l4-22 16 12zM184 140l-4-22-16 12z" fill="#ff9fb0"/>
+     <circle cx="150" cy="176" r="48" fill="#ffb067"/>
+     <path d="M150 130v14M136 132l3 12M164 132l-3 12" stroke="#e58a3a" stroke-width="4" stroke-linecap="round"/>
+     <ellipse cx="150" cy="192" rx="24" ry="17" fill="#fff3dc"/>
+     <circle cx="130" cy="174" r="8" fill="#2a1442"/><circle cx="170" cy="174" r="8" fill="#2a1442"/><circle cx="133" cy="171" r="3" fill="#fff"/><circle cx="173" cy="171" r="3" fill="#fff"/>
+     <path d="M145 186h10l-5 6z" fill="#ff7f9d"/><path d="M150 192q-6 8-12 3M150 192q6 8 12 3" stroke="#2a1442" stroke-width="2" fill="none" stroke-linecap="round"/>
+     <g stroke="#fff" stroke-width="1.5"><path d="M118 188l-22-4M118 194l-22 4M182 188l22-4M182 194l22 4"/></g>
+     <circle cx="116" cy="190" r="6" fill="#ff9fb0" opacity=".6"/><circle cx="184" cy="190" r="6" fill="#ff9fb0" opacity=".6"/>
+    </g>
+    <rect x="72" y="218" width="156" height="94" rx="5" fill="#5dd9b8"/><rect x="72" y="292" width="156" height="20" rx="5" fill="#35b596"/><rect x="138" y="218" width="24" height="94" fill="#ffc83d"/>
+    <g fill="#fff" opacity=".7"><circle cx="96" cy="250" r="2.5"/><circle cx="108" cy="280" r="2.5"/><circle cx="196" cy="246" r="2.5"/><circle cx="204" cy="276" r="2.5"/></g>
+    <g id="lid2"><rect x="60" y="190" width="180" height="34" rx="6" fill="#6ee3c3"/><rect x="138" y="190" width="24" height="34" fill="#ffc83d"/>
+     <ellipse cx="128" cy="182" rx="20" ry="11" fill="#ffc83d" transform="rotate(-20 128 182)"/><ellipse cx="172" cy="182" rx="20" ry="11" fill="#ffc83d" transform="rotate(20 172 182)"/><circle cx="150" cy="186" r="8" fill="#e8a30c"/></g>
+   </svg>
+  </section>
+  <!-- 4: card -->
+  <section class="sc" id="s3">
+   <div id="card">
+    <svg class="mini" viewBox="0 0 240 240"><use href="#sf" width="240" height="440"/></svg>
+    <h2>Dear Prity,</h2>
+    <p>Happy Birthday meri pyaari mahila mitra! Aaj ka din sirf tumhara hai: cake bhi tumhara, gifts bhi tumhare, aur mujhe jhelne ka haq bhi tumhara.</p>
+    <p>Hamesha aise hi hasti raho, chamakti raho, aur tumhare saare sapne poore hon.</p>
+    <p>Many many happy returns of the day!</p>
+    <span class="from">Tumhara dost</span>
+   </div>
+  </section>
+  <!-- 5: sunflower -->
+  <section class="sc" id="s4">
+   <div id="fh">Happy Birthday Prity</div>
+   <svg id="sfw" viewBox="0 0 240 440"><use href="#sf" width="240" height="440"/></svg>
+  </section>
+ </div>
+ <div id="hint"></div>
+ <button id="go"></button>
+</div>
+<svg width="0" height="0" style="position:absolute"><defs id="defs"></defs></svg>
+<script>
+const $=s=>document.querySelector(s),B=document.body.classList,btn=$('#go'),hint=$('#hint'),dots=[...document.querySelectorAll('.dot')];
+let snd=true,AC,ph=0,left=5;
+/* sunflower symbol */
+let pet='';
+for(let l=0;l<2;l++)for(let i=0;i<14;i++)pet+=`<ellipse cx="120" cy="${l?64:56}" rx="19" ry="${l?40:48}" fill="${l?'#ffb81c':'#ffd33d'}" transform="rotate(${i*360/14+l*12.8} 120 130)"/>`;
+$('#defs').innerHTML=`<symbol id="sf" viewBox="0 0 240 440"><path d="M120 170C122 270 116 350 120 430" stroke="#3f8f3a" stroke-width="9" fill="none" stroke-linecap="round"/><path d="M118 330C80 330 50 310 36 288 74 282 108 300 118 330z" fill="#4aa544"/><path d="M122 290C160 290 190 272 204 250 166 244 132 262 122 290z" fill="#4aa544"/>${pet}<circle cx="120" cy="130" r="42" fill="#6b3a14"/><circle cx="120" cy="130" r="29" fill="#4a2509"/><g fill="#8a5424"><circle cx="108" cy="120" r="3"/><circle cx="130" cy="122" r="3"/><circle cx="120" cy="138" r="3"/><circle cx="104" cy="140" r="3"/><circle cx="136" cy="140" r="3"/></g></symbol>`;
+/* sound */
+function tone(f,d=.15,t='sine',v=.14,w=0){if(!snd)return;try{AC=AC||new(window.AudioContext||window.webkitAudioContext)();const o=AC.createOscillator(),g=AC.createGain(),s=AC.currentTime+w;o.type=t;o.frequency.value=f;g.gain.setValueAtTime(v,s);g.gain.exponentialRampToValueAtTime(.001,s+d);o.connect(g).connect(AC.destination);o.start(s);o.stop(s+d)}catch(e){}}
+$('#snd').onclick=e=>{snd=!snd;e.target.textContent=snd?'Sound on':'Sound off'};
+const melody=()=>{[262,262,294,262,349,330].forEach((f,i)=>tone(f,.4,'triangle',.12,[0,.28,.5,1,1.5,2.1][i]))};
+/* confetti */
+function burst(x,y,n=40){const c=['#ffc83d','#ff6b9d','#5dd9b8','#a78bfa','#fff'];for(let i=0;i<n;i++){const e=document.createElement('i');e.className='cf';e.style.cssText=`left:${x}px;top:${y}px;background:${c[i%5]}`;document.body.append(e);const a=Math.random()*6.28,v=70+Math.random()*170;e.animate([{transform:'translate(0,0) rotate(0)',opacity:1},{transform:`translate(${Math.cos(a)*v}px,${Math.sin(a)*v+130}px) rotate(${Math.random()*720}deg)`,opacity:0}],{duration:1100+Math.random()*700,easing:'cubic-bezier(.2,.7,.4,1)'}).onfinish=()=>e.remove()}}
+const at=(id,n)=>{const r=$(id).getBoundingClientRect();burst(r.left+r.width/2,r.top+r.height/3,n)};
+/* balloons */
+function mkBalloons(){document.querySelectorAll('.bl').forEach(b=>b.remove());left=5;const C=['#ff6b9d','#ffc83d','#5dd9b8','#a78bfa','#ff9a5a'],X=[6,26,46,64,80],Y=[14,3,20,6,24];[...'PRITY'].forEach((ch,i)=>{const b=document.createElement('div');b.className='bl';b.textContent=ch;b.setAttribute('role','button');b.style.cssText=`--x:${X[i]}%;--y:${Y[i]}%;--c:${C[i]};--d:${i*.4}s`;b.onclick=()=>pop(b);$('#s1').append(b)})}
+function pop(b){if(b.dataset.x)return;b.dataset.x=1;const r=b.getBoundingClientRect();burst(r.left+32,r.top+36,24);tone(260+Math.random()*320,.09,'square',.08);b.classList.add('pop');setTimeout(()=>b.remove(),260);if(--left==0){B.add('title');melody();wait(3200,4)}}
+/* flow */
+const wait=(ms,n)=>{btn.disabled=true;btn.textContent='Ruko zara…';setTimeout(()=>go(n),ms)};
+const P=[
+{s:0,d:0,l:'Box kholo',f:()=>{B.add('opened');tone(520,.2);tone(780,.3,'sine',.12,.14);at('#s0 svg',30);go(1)}},
+{s:0,d:0,l:'Phoonk maro',f:()=>{B.add('blown');tone(180,.6,'sawtooth',.03);go(2)}},
+{s:0,d:0,l:'Cake kaato',f:()=>{B.add('cut');at('#cake',60);[523,659,784,1046].forEach((f,i)=>tone(f,.25,'triangle',.1,i*.1));wait(2200,3)}},
+{s:1,d:1,l:'Balloon phodo',h:'Balloon pe tap karo, ya neeche wala button dabao',f:()=>{btn.disabled=true;[...document.querySelectorAll('.bl')].forEach((b,i)=>setTimeout(()=>pop(b),i*200))}},
+{s:2,d:2,l:'Gift kholo',f:()=>{B.add('gift');at('#s2 svg',40);tone(660,.2);tone(880,.3,'sine',.12,.15);wait(1800,5)}},
+{s:2,d:2,l:'Card dekho',f:()=>go(6)},
+{s:3,d:3,l:'Aakhri surprise',f:()=>go(7)},
+{s:4,d:4,l:'Dobara dekho',h:'Ghumane ke liye drag karo',f:()=>{B.remove('opened','blown','cut','title','gift');rot=0;$('#sfw').style.transform='';mkBalloons();go(0)}}];
+function go(i){ph=i;const p=P[i];document.querySelectorAll('.sc').forEach((s,k)=>s.classList.toggle('on',k===p.s));btn.disabled=false;btn.textContent=p.l;hint.textContent=p.h||'';dots.forEach((d,k)=>d.className='dot'+(k<p.d?' done':k==p.d?' on':''));if(i==7){at('#s4',50);melody()}}
+btn.onclick=()=>{tone(440,.06,'triangle',.08);P[ph].f()};
+/* drag to rotate sunflower */
+let rot=0,dx=null;const sw=$('#sfw');
+sw.onpointerdown=e=>{dx=e.clientX;sw.setPointerCapture(e.pointerId);sw.style.cursor='grabbing'};
+sw.onpointermove=e=>{if(dx===null)return;rot+=(e.clientX-dx)*.9;dx=e.clientX;sw.style.transform=`perspective(700px) rotateY(${rot}deg)`};
+sw.onpointerup=sw.onpointercancel=()=>{dx=null;sw.style.cursor='grab'};
+mkBalloons();go(0);
+</script>
+</body>
+</html>
